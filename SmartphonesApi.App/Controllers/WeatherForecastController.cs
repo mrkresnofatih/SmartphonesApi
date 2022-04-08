@@ -8,7 +8,7 @@ namespace SmartphonesApi.App.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [CustomExceptionFilter]
+    [TypeFilter(typeof(CustomExceptionFilterAttribute))]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

@@ -2,7 +2,7 @@
 {
     public static class CustomErrorCodes
     {
-        public const string RecordNotFound = "709";
-        public const string Unhandled = "710";
+        public const string RecordNotFound = "498";
+        public const string Unhandled = "499";
     }
 }
