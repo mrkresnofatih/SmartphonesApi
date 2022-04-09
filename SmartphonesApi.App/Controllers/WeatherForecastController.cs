@@ -1,7 +1,10 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SmartphonesApi.App.Constants.CustomExceptions;
+using SmartphonesApi.App.Services;
 using SmartphonesApi.App.Utils;
 
 namespace SmartphonesApi.App.Controllers
@@ -11,20 +14,15 @@ namespace SmartphonesApi.App.Controllers
     [TypeFilter(typeof(CustomExceptionFilterAttribute))]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
+        public WeatherForecastController(IWeatherForecastService weatherForecastService)
         {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
+            _weatherForecastService = weatherForecastService;
         }
 
+        private readonly IWeatherForecastService _weatherForecastService;
+
         [HttpGet("{number}")]
-        public object Get(int number)
+        public async Task<ActionResult<List<WeatherForecast>>> Get(int number)
         {
             if (number == 1)
             {
@@ -36,7 +34,14 @@ namespace SmartphonesApi.App.Controllers
                 throw new FileNotFoundException();
             }
 
-            return new { value=number };
+            var res = await _weatherForecastService.GetAllForecasts();
+
+            if (res.Any())
+            {
+                return Ok(res);
+            }
+            
+            return NotFound();
         }
     }
 }

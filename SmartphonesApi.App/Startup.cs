@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using SmartphonesApi.App.Services;
 
 namespace SmartphonesApi.App
 {
@@ -32,6 +33,7 @@ namespace SmartphonesApi.App
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SmartphonesApi.App", Version = "v1" });
             });
+            services.AddTransient<IWeatherForecastService, WeatherForecastService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
